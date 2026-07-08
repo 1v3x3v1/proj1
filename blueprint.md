@@ -1025,6 +1025,302 @@ gobuster is a directory/file brute-forcing tool that discovers hidden endpoints 
 - System administrators
 - Penetration testers
 - DevOps engineers
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+## 🎯 **Domain Input with Default Google: Browser Mode Enhancement**
+
+Excellent addition! This makes your browser mode more versatile while keeping it lightweight. Let me analyze this:
+
+---
+
+## 📊 **Enhanced Browser Mode: Domain Input**
+
+### **The Concept**
+Instead of always searching Google Maps/Weather, users can:
+1. Enter just a domain name (default: google.com)
+2. Optionally add a path
+3. Optionally add arguments
+4. Your app constructs the full URL automatically
+
+---
+
+## 🔄 **User Flow**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    ENHANCED BROWSER MODE                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  USER INPUT:                                                       │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │  Domain: [google.com] (default if empty)                  │   │
+│  │  Path:   [/maps/place/Paris] (optional)                   │   │
+│  │  Args:   [?q=weather&hl=en] (optional)                    │   │
+│  │                                                             │   │
+│  │  [🌐 Navigate]  [📥 Download Offline]                     │   │
+│  └────────────────────────────────────────────────────────────┘   │
+│                          │                                          │
+│                          ▼                                          │
+│  CONSTRUCTED URL:                                                  │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │  https://google.com/maps/place/Paris?q=weather&hl=en     │   │
+│  └────────────────────────────────────────────────────────────┘   │
+│                          │                                          │
+│                          ▼                                          │
+│  ACTION:                                                           │
+│  • Navigate → Opens in canvas/browser                             │
+│  • Download → Fetches and stores offline                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 💡 **Input Combinations**
+
+| Domain | Path | Args | Resulting URL |
+|--------|------|------|---------------|
+| `google.com` | (empty) | (empty) | `https://google.com` |
+| `google.com` | `/maps` | `?q=Paris` | `https://google.com/maps?q=Paris` |
+| (empty) | `/search` | `?q=weather` | `https://google.com/search?q=weather` |
+| `github.com` | `/user/repo` | `?tab=readme` | `https://github.com/user/repo?tab=readme` |
+| `wikipedia.org` | `/wiki/Python` | (empty) | `https://wikipedia.org/wiki/Python` |
+
+---
+
+## 🚀 **Lightweight Implementation Options**
+
+### **Option 1: Simple URL Constructor (Lightest)**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  LIGHTEST APPROACH                                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  How it works:                                                     │
+│  • Just three input fields                                         │
+│  • Client-side string concatenation                                │
+│  • No validation, no extra libraries                               │
+│  • User is responsible for correct syntax                          │
+│                                                                     │
+│  Why it's lightweight:                                             │
+│  • Zero dependencies                                               │
+│  • Runs entirely in browser                                        │
+│  • No backend processing                                           │
+│  • Pure HTML/JS string manipulation                                │
+│                                                                     │
+│  Downsides:                                                        │
+│  • No error checking                                               │
+│  • User must know correct URL structure                            │
+│  • No validation for special characters                            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### **Option 2: Smart URL Builder (Lightweight)**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  SMART APPROACH                                                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  How it works:                                                     │
+│  • Auto-adds https:// if missing                                   │
+│  • Normalizes slashes (/ vs \\)                                    │
+│  • Handles query parameter encoding                                │
+│  • Validates domain format                                         │
+│                                                                     │
+│  Why it's lightweight:                                             │
+│  • Still runs client-side                                          │
+│  • Uses built-in URL API                                           │
+│  • No external libraries needed                                    │
+│  • Minimal processing overhead                                     │
+│                                                                     │
+│  Benefits:                                                         │
+│  • User-friendly                                                   │
+│  • Prevents common errors                                          │
+│  • Works with any domain                                           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### **Option 3: Domain with Templates (Feature Light)**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  TEMPLATE APPROACH                                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  How it works:                                                     │
+│  • Predefined service templates                                    │
+│  • User selects service instead of typing                          │
+│  • Auto-fills domain for common sites                              │
+│                                                                     │
+│  Templates:                                                        │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │  ○ Google Search    → google.com/search?q={query}         │   │
+│  │  ○ Google Maps      → google.com/maps/place/{location}    │   │
+│  │  ○ YouTube          → youtube.com/results?search_query=   │   │
+│  │  ○ Wikipedia        → wikipedia.org/wiki/{query}          │   │
+│  │  ○ GitHub           → github.com/{user}/{repo}            │   │
+│  │  ○ Custom           → [user defined]                      │   │
+│  └────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  Why it's lightweight:                                             │
+│  • Minimal user input                                              │
+│  • No parsing errors                                               │
+│  • One-line URL construction                                       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📊 **Comparison of Lightweight Approaches**
+
+| Feature | Simple Constructor | Smart Builder | Template System |
+|---------|-------------------|---------------|-----------------|
+| **Complexity** | Very Low | Low | Moderate |
+| **User Effort** | High (must know URLs) | Low | Very Low |
+| **Error Handling** | None | Good | Excellent |
+| **Flexibility** | Full | High | Limited to templates |
+| **Dependencies** | None | URL API (built-in) | None |
+| **Code Size** | ~10 lines | ~30 lines | ~50 lines |
+| **Performance** | Instant | Instant | Instant |
+
+---
+
+## 🎯 **Implementation Options**
+
+### **Default Value: google.com**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  DEFAULT HANDLING                                                  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  If user leaves domain empty:                                      │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │  Domain: [_____] (empty)                                  │   │
+│  │  Path:   [/maps]                                           │   │
+│  │  Args:   [?q=Paris]                                       │   │
+│  │                                                             │   │
+│  │  → https://google.com/maps?q=Paris                        │   │
+│  └────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  This maintains your original weather/maps functionality           │
+│  while adding extensibility                                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🔧 **Additional Lightweight Integrations**
+
+### **1. History / Bookmarks (Lightweight)**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  SUGGESTION: Quick Access                                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  • Save recent domains in localStorage (<= 5KB)                   │
+│  • Dropdown of last 10 domains                                     │
+│  • No database needed                                              │
+│  • Persists across sessions                                        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### **2. Domain Validation (Lightweight)**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  SUGGESTION: Simple Validation                                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  • Check if domain contains invalid characters                     │
+│  • Check if domain format is valid                                 │
+│  • Simple regex pattern                                            │
+│  • No DNS lookup (keep it lightweight)                             │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### **3. URL Preview (Lightweight)**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  SUGGESTION: Live Preview                                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  • Show constructed URL as user types                              │
+│  • No processing, just string concatenation                        │
+│  • Helps users see what they're building                           │
+│  • Zero performance impact                                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📋 **Integration Points with Your Existing Architecture**
+
+| Component | How It Fits |
+|-----------|-------------|
+| **URL Bar** | Replaces hardcoded Google with constructed URL |
+| **Download** | Uses same Python fetch + storage pipeline |
+| **Canvas** | Displays the constructed URL's content |
+| **Cache** | Uses same ZIP storage with domain as key |
+| **Recon Mode** | Unchanged (separate functionality) |
+
+---
+
+## 💡 **Why This is Lightweight**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  LIGHTWEIGHT CHECKLIST                                             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ✅ No external libraries                                           │
+│  ✅ No network calls (except final navigation)                     │
+│  ✅ No database                                                    │
+│  ✅ Client-side only                                                │
+│  ✅ No parsing (just concatenation)                                │
+│  ✅ No validation overhead (optional)                              │
+│  ✅ No background processes                                        │
+│  ✅ Minimal memory usage                                           │
+│  ✅ Works with existing architecture                               │
+│  ✅ No changes to Python backend (except URL handling)             │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🎯 **Final Summary**
+
+Your enhancement allows:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  BEFORE:                                                           │
+│  • Hardcoded Google Maps/Weather                                   │
+│  • Single-purpose                                                  │
+│                                                                     │
+│  AFTER:                                                            │
+│  • Any domain, any path, any arguments                             │
+│  • Default to Google for backward compatibility                    │
+│  • Extensible without changing core                                │
+│  • Lightweight (no new dependencies)                               │
+│  • Familiar interface (like a browser's address bar)              │
+│                                                                     │
+│  RESULT:                                                           │
+│  • Single input field with 3 parts                                 │
+│  • Default: google.com                                            │
+│  • Optional: path + arguments                                      │
+│  • Same download/storage pipeline                                  │
+│  • Zero added complexity                                            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 
 
 - Users see exactly what's available
