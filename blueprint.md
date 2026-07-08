@@ -628,6 +628,404 @@
 ✅ **Offline** - Everything stored locally in one ZIP file  
 
 ### **The Resource Selection List is the Key Innovation:**
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+## 🎯 **Linux Reconnaissance Mode: Your App as a Security Tool**
+
+Excellent addition! This transforms your mini-browser into a **dual-purpose tool**: 
+1. **Normal Mode**: Offline browsing & content archiving
+2. **Recon Mode**: Web enumeration & endpoint discovery (Linux-only)
+
+---
+
+## 📊 **Architecture with Recon Mode**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    DUAL-MODE ARCHITECTURE                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │  MODE SELECTOR (Linux Only)                                │   │
+│  │  ┌────────────────────────────────────────────────────┐   │   │
+│  │  │  ○  Browse Mode  (Offline Browser)               │   │   │
+│  │  │  ●  Recon Mode   (Security Audit)                │   │   │
+│  │  └────────────────────────────────────────────────────┘   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                          │                                          │
+│                          ▼                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │  RECON MODE (gobuster Integration)                         │   │
+│  ├─────────────────────────────────────────────────────────────┤   │
+│  │                                                             │   │
+│  │  Target: [example.com]  Wordlist: [common.txt ▼]           │   │
+│  │  Extensions: [php, html, txt]  Threads: [20 ▼]             │   │
+│  │  [🔍 Start Scan]  [⏹️ Stop]  [📊 Results]                  │   │
+│  │                                                             │   │
+│  │  ┌────────────────────────────────────────────────────┐   │   │
+│  │  │  Found Endpoints (42 discovered):                 │   │   │
+│  │  │  ✅ /admin (200)  ✅ /api (200)                  │   │   │
+│  │  │  ✅ /backup.zip (200)  ✅ /config.php (200)     │   │   │
+│  │  │  ❌ /hidden (404)   ❌ /test (404)               │   │   │
+│  │  │  📊 /robots.txt (200)  📊 /sitemap.xml (200)   │   │   │
+│  │  └────────────────────────────────────────────────────┘   │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                          │                                          │
+│                          ▼                                          │
+│  ┌─────────────────────────────────────────────────────────────┐   │
+│  │  SAVE RESULTS                                               │   │
+│  │  • Export to ZIP (same storage)                            │   │
+│  │  • Save as JSON/CSV                                        │   │
+│  │  • View discovered endpoints offline                       │   │
+│  │  • Optional: fetch discovered endpoints                    │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🔧 **gobuster Integration Details**
+
+### **What gobuster Does**
+gobuster is a directory/file brute-forcing tool that discovers hidden endpoints by trying thousands of common paths against a target URL.
+
+### **How Your App Integrates It**
+
+| Feature | Implementation | Benefit |
+|---------|----------------|---------|
+| **Direct execution** | Python subprocess calls gobuster | No extra setup needed (if installed) |
+| **Built-in fallback** | Include wordlists in app | Works even without system gobuster |
+| **Custom wordlists** | Let users select or upload | Flexibility for different targets |
+| **Thread control** | Adjustable concurrency | Balance speed vs server load |
+| **Extension support** | .php, .html, .txt, etc. | Find specific file types |
+| **Recursive scanning** | Explore discovered directories | Deeper reconnaissance |
+
+---
+
+## 📊 **Recon Mode Features**
+
+### **Core Functionality**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  RECON MODE DASHBOARD                                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  Target Configuration:                                             │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │  Target URL: [https://example.com]                        │   │
+│  │  User-Agent: [Mozilla/5.0 (Linux) ... ▼]                 │   │
+│  │  Cookies: [Optional: paste cookie string]                 │   │
+│  │  Headers: [Custom headers for authentication]             │   │
+│  └────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  Wordlist Selection:                                               │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │  ●  Built-in:  [common.txt (4,680 entries)]              │   │
+│  │  ○  Built-in:  [directory-list-2.3-medium.txt (220K)]   │   │
+│  │  ○  Built-in:  [apache.txt (1,024 entries)]              │   │
+│  │  ○  Custom:    [Upload wordlist file]                    │   │
+│  └────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  Scan Options:                                                     │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │  Extensions: [php] [html] [txt] [js] [css] [json]        │   │
+│  │  Threads: [20]  Delay: [100ms]  Timeout: [10s]           │   │
+│  │  ☑️  Follow redirects  ☑️  Show status codes              │   │
+│  │  ☑️  Filter 404s       ☑️  Save results                   │   │
+│  └────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  Results Display:                                                  │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │  Status  Size    Path                                     │   │
+│  │  ──────────────────────────────────────────────────────   │   │
+│  │  [200]  1.2 KB  /admin                                   │   │
+│  │  [200]  4.5 KB  /api/users                               │   │
+│  │  [301]  0 B     /blog                                    │   │
+│  │  [200]  2.3 MB  /backup.zip                              │   │
+│  │  [403]  0 B     /config                                  │   │
+│  │  [404]  0 B     /hidden                                  │   │
+│  │  ... 42 endpoints found                                  │   │
+│  └────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│  Actions:                                                           │
+│  [📥 Export CSV]  [📄 Save JSON]  [📁 Save to ZIP]  [🔍 Fetch]    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🎯 **How Recon Mode Enhances Your App**
+
+| Feature | Normal Mode | Recon Mode (Linux) |
+|---------|-------------|-------------------|
+| **Primary use** | Offline browsing | Security auditing |
+| **Content** | Save visible pages | Discover hidden endpoints |
+| **Storage** | HTML + images | Endpoint lists + status codes |
+| **Speed** | Single page | Multi-threaded brute force |
+| **Stealth** | Browser impersonation | Configurable delays/headers |
+| **Output** | ZIP archive | JSON/CSV + optional ZIP |
+
+---
+
+## 📊 **Use Cases for Recon Mode**
+
+### **1. Security Auditing**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  🔐  SECURITY ASSESSMENT                                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  What It Finds:                                                    │
+│  • Admin panels ( /admin, /dashboard )                            │
+│  • Configuration files ( /config.php, /.env )                     │
+│  • Backup files ( /backup.zip, /db_dump.sql )                     │
+│  • Sensitive directories ( /internal, /dev )                      │
+│  • API endpoints ( /api/v1, /graphql )                            │
+│  • Hidden test pages ( /test, /debug )                            │
+│                                                                     │
+│  How to Use:                                                       │
+│  1. Run reconnaissance on your own site                           │
+│  2. Find exposed files                                             │
+│  3. Fix security holes                                             │
+│  4. Repeat after fixes                                             │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### **2. Competitive Intelligence**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  🔍  COMPETITIVE ANALYSIS                                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  What It Reveals:                                                  │
+│  • Technology stack ( /wp-admin, /phpmyadmin )                    │
+│  • Subdomain structure                                             │
+│  • API endpoints used                                              │
+│  • Third-party integrations                                        │
+│  • Development environments                                        │
+│                                                                     │
+│  Note: Only for legitimate research on public sites!               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### **3. Bug Bounty Preparation**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  🐛  BUG BOUNTY RESEARCH                                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  What It Helps With:                                               │
+│  • Map attack surface                                              │
+│  • Find hidden endpoints for testing                               │
+│  • Discover overlooked directories                                 │
+│  • Identify misconfigured servers                                  │
+│  • Generate reports for submissions                                │
+│                                                                     │
+│  Best Practices:                                                   │
+│  • Always stay within scope                                        │
+│  • Respect robots.txt                                              │
+│  • Use reasonable speed/throttling                                 │
+│  • Document findings responsibly                                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### **4. Internal Network Testing**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  🏢  INTERNAL SECURITY                                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  Use Cases:                                                        │
+│  • Test internal web applications                                 │
+│  • Discover forgotten dev endpoints                                │
+│  • Audit staging environments                                      │
+│  • Check for exposed internal tools                                │
+│  • Verify security controls                                        │
+│                                                                     │
+│  Environment:                                                      │
+│  • Works on internal IPs (192.168.x.x)                            │
+│  • Supports custom DNS/internal domains                            │
+│  • Can use local wordlists                                         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🛠️ **Technology Stack for Recon Mode**
+
+### **Core Components**
+
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| **Brute forcing** | gobuster (system) | Fast directory enumeration |
+| **Alternative** | Python dirbuster (fallback) | Built-in if gobuster missing |
+| **Wordlists** | Included (common.txt, etc.) | Pre-built for immediate use |
+| **Subprocess** | Python subprocess | Execute gobuster |
+| **Parsing** | Python regex/JSON | Parse gobuster output |
+| **Storage** | ZIP + JSON | Store results |
+| **UI** | HTML/JS | Display progress & results |
+
+### **Wordlists Included**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  WORDLISTS INCLUDED                                                │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  📂  Built-in Wordlists:                                           │
+│  ├── common.txt (4,680) - Most common directory names              │
+│  ├── small.txt (1,024) - Quick scan for common paths               │
+│  ├── apache.txt (1,024) - Apache default directories               │
+│  ├── admin.txt (500) - Admin panel keywords                        │
+│  ├── extensions.txt (50) - Common file extensions                  │
+│  ├── backup.txt (200) - Backup file patterns                       │
+│  ├── api.txt (300) - API endpoint patterns                         │
+│  ├── cms.txt (2,500) - CMS-specific paths (WP, Drupal, etc.)       │
+│  └── dev.txt (1,200) - Development-related paths                   │
+│                                                                     │
+│  📂  User Uploads:                                                 │
+│  └── Custom wordlists (any size)                                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📊 **Output Formats**
+
+### **Result Storage Structure**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  RECON RESULTS STORAGE                                             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  recon_archive.zip                                                 │
+│  ├── scans/                                                       │
+│  │   ├── target1/                                                 │
+│  │   │   ├── scan_results.json                                    │
+│  │   │   ├── scan_results.csv                                     │
+│  │   │   ├── found_endpoints.txt                                  │
+│  │   │   ├── wordlist_used.txt                                    │
+│  │   │   └── metadata.json                                        │
+│  │   └── target2/                                                 │
+│  │       └── ...                                                  │
+│  ├── reports/                                                     │
+│  │   ├── summary.html                                             │
+│  │   └── detailed.html                                            │
+│  └── wordlists/ (optional)                                        │
+│      └── custom_wordlist.txt                                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### **JSON Result Format**
+
+```json
+{
+  "target": "https://example.com",
+  "scan_date": "2024-01-15T14:30:00",
+  "wordlist": "common.txt",
+  "entries": 4680,
+  "threads": 20,
+  "extensions": ["php", "html", "txt"],
+  "results": [
+    {
+      "path": "/admin",
+      "status": 200,
+      "size": 1234,
+      "content_type": "text/html"
+    },
+    {
+      "path": "/backup.zip",
+      "status": 200,
+      "size": 2456789,
+      "content_type": "application/zip"
+    }
+  ],
+  "stats": {
+    "total_found": 42,
+    "by_status": {
+      "200": 15,
+      "301": 8,
+      "403": 5,
+      "404": 14
+    },
+    "scan_time": "2m34s"
+  }
+}
+```
+
+---
+
+## ⚠️ **Ethical & Legal Considerations**
+
+| Consideration | Guideline |
+|---------------|-----------|
+| **Permission** | Only scan sites you own or have explicit permission to test |
+| **Scope** | Stay within authorized targets |
+| **Rate limiting** | Respect server resources (use delays) |
+| **robots.txt** | Honor disallowed paths |
+| **Data sensitivity** | Don't share results publicly |
+| **Logging** | Keep results private and secure |
+| **Reporting** | Document findings responsibly |
+
+---
+
+## 🎯 **Mode Comparison**
+
+| Feature | Browse Mode | Recon Mode |
+|---------|-------------|------------|
+| **Platform** | All (Win/Mac/Linux) | Linux only |
+| **Purpose** | Offline reading | Security auditing |
+| **Output** | HTML + images | Endpoint lists |
+| **Speed** | Single page | Multi-threaded |
+| **Stealth** | Browser impersonation | Configurable delays |
+| **Wordlists** | Not used | Required |
+| **gobuster** | Not used | Integration |
+| **Storage** | ZIP archive | JSON/CSV + ZIP |
+
+---
+
+## 🚀 **Benefits of Adding Recon Mode**
+
+1. **Dual-purpose tool** - One app, two functions
+2. **Linux advantage** - Leverages native security tools
+3. **Integrated workflow** - Browse results + recon in one place
+4. **Results persistence** - Save scans in same ZIP format
+5. **Stealth features** - Use your browser impersonation for recon too
+6. **Wordlist flexibility** - Built-in + custom wordlists
+7. **Export options** - JSON, CSV, HTML reports
+
+---
+
+## 💡 **Final Thought**
+
+**Your app becomes:**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  TOOL:  Hybrid Mini-Browser + Reconnaissance Suite                │
+│  MODES:  Browse (Offline)  |  Recon (Linux Security)              │
+│  USE:    Content archiving  |  Endpoint discovery                 │
+│  POWER:  Python performance  |  JavaScript stealth                │
+│  OUTPUT: ZIP (readable)     |  JSON/CSV (analyzable)              │
+│  PLATFORM: Windows, Mac, Linux  |  Linux (Recon)                  │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+##########dual-mode#############
+- Security professionals
+- Bug bounty hunters  
+- System administrators
+- Penetration testers
+- DevOps engineers
+
 
 - Users see exactly what's available
 - Can preview sizes
