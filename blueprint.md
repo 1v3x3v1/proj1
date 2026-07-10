@@ -2,7 +2,7 @@
 
 ### 🎯 **Core Concept**
 A Python-powered mini-browser that:
-- Fetches web content once (via `curl_cffi`)
+- Fetches web content 
 - Strips it down to essentials
 - Stores it in compressed ZIP format
 - Displays it offline on tkinter
@@ -21,7 +21,7 @@ A Python-powered mini-browser that:
 │                                                             │
 │  ┌────────────────────────────────────────────────────┐    │
 │  │  🔍 FETCH LAYER                                    │    │
-│  │  • curl_cffi (impersonates Chrome/Firefox)        │    │
+│  │  • (impersonates Chrome/Firefox)        │    │
 │  │  • Bypasses CORS & bot detection                  │    │
 │  │  • Gets raw HTML                                  │    │
 │  └────────────────────────────────────────────────────┘    │
