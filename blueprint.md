@@ -5,7 +5,7 @@ A Python-powered mini-browser that:
 - Fetches web content once (via `curl_cffi`)
 - Strips it down to essentials
 - Stores it in compressed ZIP format
-- Displays it offline on model-viewer
+- Displays it offline on tkinter
 - Never re-fetches if cached
 
 ---
@@ -58,11 +58,11 @@ A Python-powered mini-browser that:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### **Component 2: Frontend Display** (model-viewer Mini-Browser)
+### **Component 2: Frontend Display** (tkinter Mini-Browser)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    model-viewer DISPLAY                           │
+│                    tkinter DISPLAY                           │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │  ┌────────────────────────────────────────────────────┐    │
@@ -74,10 +74,10 @@ A Python-powered mini-browser that:
 │  └────────────────────────────────────────────────────┘    │
 │                          ▼                                  │
 │  ┌────────────────────────────────────────────────────┐    │
-│  │  🎨 model-viewer RENDERER                                │    │
+│  │  🎨 tkinter RENDERER                                │    │
 │  │  • Renders cleaned HTML content                   │    │
 │  │  • Interactive elements:                         │    │
-│  │    - Clickable links (opens in model-viewer)           │    │
+│  │    - Clickable links (opens in tkinter)           │    │
 │  │    - Form submission (calls Python backend)      │    │
 │  │  • Styled text (fonts, colors, sizes)            │    │
 │  │  • Custom scrolling (if needed)                  │    │
@@ -125,7 +125,7 @@ ZIP (OFFLINE)     curl_cffi (ONLINE)
   │                    │
   ▼                    ▼
 └─────────────────────────────────┐
-│  Display cleaned HTML on model-viewer│
+│  Display cleaned HTML on tkinter│
 └─────────────────────────────────┘
   │
   ▼
@@ -183,7 +183,7 @@ ZIP ARCHIVE (browser_cache.zip)
 ```
 ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
 │    USER      │     │   FRONTEND   │     │   BACKEND    │
-│  (Browser)   │     │  (model-viewer)    │     │   (Python)   │
+│  (Browser)   │     │  (tkinter)    │     │   (Python)   │
 └──────┬───────┘     └──────┬───────┘     └──────┬───────┘
        │                    │                    │
        │  1. Enter URL      │                    │
@@ -210,7 +210,7 @@ ZIP ARCHIVE (browser_cache.zip)
        │                    │◄───────────────────│
        │                    │                    │
        │                    │  5. Render on      │
-       │                    │     model-viewer         │
+       │                    │     tkinter         │
        │                    │                    │
        │  6. Display        │                    │
        │◄───────────────────│                    │
@@ -235,7 +235,7 @@ ZIP ARCHIVE (browser_cache.zip)
 |---------|--------|
 | HTML cleaning | ✅ Planned |
 | ZIP compression | ✅ Planned |
-| model-viewer rendering | ✅ Planned |
+| tkinter rendering | ✅ Planned |
 | Offline display | ✅ Planned |
 | Locked URL bar | ✅ Planned |
 | Cache checking | ✅ Planned |
@@ -278,7 +278,7 @@ ZIP ARCHIVE (browser_cache.zip)
 │  Fetch (first)     │  1-3s       │
 │  Clean HTML        │  100-500ms  │
 │  Compress          │  50-200ms   │
-│  Render (model-viewer)   │  10-50ms    │
+│  Render (tkinter)   │  10-50ms    │
 │  Offline display   │  <50ms      │
 └────────────────────┴──────────────┘
 ```
@@ -296,7 +296,7 @@ ZIP ARCHIVE (browser_cache.zip)
 | **Lightweight** | Compressed, text-only storage |
 | **Controlled** | No external API dependencies |
 | **Private** | Everything stored locally |
-| **Simple** | model-viewer renders exactly what you want |
+| **Simple** | tkinter renders exactly what you want |
 
 ---
 
@@ -319,7 +319,7 @@ ZIP ARCHIVE (browser_cache.zip)
 > 1. Fetches web pages once via `curl_cffi`
 > 2. Strips them down to clean, interactive text
 > 3. Stores them in compressed ZIP format
-> 4. Displays them on model-viewer (no navigation)
+> 4. Displays them on tkinter (no navigation)
 > 5. Serves from cache on subsequent visits
 > 6. Uses minimal storage (5-25 KB/page)
 > 7. Works completely offline once cached
@@ -328,7 +328,7 @@ ZIP ARCHIVE (browser_cache.zip)
 
 ---
 
-**This is a solid, well-planned project!** The architecture makes sense, storage is manageable, and the user experience is clear. Your plan to avoid model-viewer as a full browser engine (using it for display only) is the right call. 🚀
+**This is a solid, well-planned project!** The architecture makes sense, storage is manageable, and the user experience is clear. Your plan to avoid tkinter as a full browser engine (using it for display only) is the right call. 🚀
 
 
 
@@ -382,7 +382,7 @@ ZIP ARCHIVE (browser_cache.zip)
 │                          │                                          │
 │                          ▼                                          │
 │  ┌─────────────────────────────────────────────────────────────┐   │
-│  │  PHASE 4: model-viewer Display (Offline)                         │   │
+│  │  PHASE 4: tkinter Display (Offline)                         │   │
 │  │                                                             │   │
 │  │  • Renders selected content                                 │   │
 │  │  • Displays images from ZIP                                │   │
@@ -473,7 +473,7 @@ ZIP ARCHIVE (browser_cache.zip)
 │     • Organizes in ZIP archive                                   │
 │                          │                                          │
 │                          ▼                                          │
-│  7. model-viewer displays content offline                              │
+│  7. tkinter displays content offline                              │
 │     • Renders HTML                                               │
 │     • Shows images from ZIP                                      │
 │     • Fully interactive (links, forms)                           │
@@ -504,7 +504,7 @@ ZIP ARCHIVE (browser_cache.zip)
 │  └──────────────────────────┘    └──────────────────────────┘     │
 │                                                                     │
 │  ┌──────────────────────────┐    ┌──────────────────────────┐     │
-│  │  HTML/CSS (UI)           │    │  model-viewer (Display)        │     │
+│  │  HTML/CSS (UI)           │    │  tkinter (Display)        │     │
 │  ├──────────────────────────┤    ├──────────────────────────┤     │
 │  │                          │    │                          │     │
 │  │  • Locked URL bar        │    │  • Renders HTML          │     │
@@ -629,7 +629,7 @@ ZIP ARCHIVE (browser_cache.zip)
 > 2. Shows users a resource selection list (checkboxes)
 > 3. Downloads only selected resources via Python (fast, concurrent)
 > 4. Stores everything in compressed ZIP format
-> 5. Displays content on model-viewer (fully offline)
+> 5. Displays content on tkinter (fully offline)
 > 6. Gives users full control over what they save
 
 ### **This is an incredibly smart architecture because:**
@@ -703,7 +703,7 @@ ZIP ARCHIVE (browser_cache.zip)
 │                          │                                          │
 │                          ▼                                          │
 │  ┌─────────────────────────────────────────────────────────────┐   │
-│  │  PHASE 4: model-viewer Display (Offline)                         │   │
+│  │  PHASE 4: tkinter Display (Offline)                         │   │
 │  │                                                             │   │
 │  │  • Renders selected content                                 │   │
 │  │  • Displays images from ZIP                                │   │
@@ -794,7 +794,7 @@ ZIP ARCHIVE (browser_cache.zip)
 │     • Organizes in ZIP archive                                   │
 │                          │                                          │
 │                          ▼                                          │
-│  7. model-viewer displays content offline                              │
+│  7. tkinter displays content offline                              │
 │     • Renders HTML                                               │
 │     • Shows images from ZIP                                      │
 │     • Fully interactive (links, forms)                           │
@@ -825,7 +825,7 @@ ZIP ARCHIVE (browser_cache.zip)
 │  └──────────────────────────┘    └──────────────────────────┘     │
 │                                                                     │
 │  ┌──────────────────────────┐    ┌──────────────────────────┐     │
-│  │  HTML/CSS (UI)           │    │  model-viewer (Display)        │     │
+│  │  HTML/CSS (UI)           │    │  tkinter (Display)        │     │
 │  ├──────────────────────────┤    ├──────────────────────────┤     │
 │  │                          │    │                          │     │
 │  │  • Locked URL bar        │    │  • Renders HTML          │     │
@@ -950,7 +950,7 @@ ZIP ARCHIVE (browser_cache.zip)
 > 2. Shows users a resource selection list (checkboxes)
 > 3. Downloads only selected resources via Python (fast, concurrent)
 > 4. Stores everything in compressed ZIP format
-> 5. Displays content on model-viewer (fully offline)
+> 5. Displays content on tkinter (fully offline)
 > 6. Gives users full control over what they save
 
 ### **This is an incredibly smart architecture because:**
@@ -1405,7 +1405,7 @@ Instead of always searching Google Maps/Weather, users can:
 │                          │                                          │
 │                          ▼                                          │
 │  ACTION:                                                           │
-│  • Navigate → Opens in model-viewer/browser                             │
+│  • Navigate → Opens in tkinter/browser                             │
 │  • Download → Fetches and stores offline                          │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -1602,7 +1602,7 @@ Instead of always searching Google Maps/Weather, users can:
 |-----------|-------------|
 | **URL Bar** | Replaces hardcoded Google with constructed URL |
 | **Download** | Uses same Python fetch + storage pipeline |
-| **model-viewer** | Displays the constructed URL's content |
+| **tkinter** | Displays the constructed URL's content |
 | **Cache** | Uses same ZIP storage with domain as key |
 | **Recon Mode** | Unchanged (separate functionality) |
 
