@@ -17,6 +17,6 @@ function nav()
 }
 function loadurl()
 {
-	window.location= 'https://www.google.com/maps/place/pala';
+	window.location= 'https://www.google.com/weather';
 }
 
