@@ -34,7 +34,7 @@ else:
 
 encoded_query=urllib.parse.quote(city)
 
-searchUrl =f"'https://www.{domain}/maps/place/{encoded_query}';"
+searchUrl =f"'https://www.{domain}/weather/{encoded_query}';"
 
 with open("script.js","r") as f:
 	d=f.readlines()
